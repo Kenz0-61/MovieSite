@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/css/loginpage.css" />
+</head>
+<body>
+    <form method="post">
+        <div class="cntainer">
+            <div class="frm-group">
+                <label>Email:</label>
+                <input type="email" id="email" name="Email" placeholder="E-mail" />
+            </div><div class="frm-group">
+                <label>Password:</label>
+                <input type="password" id="password" name="Password" placeholder="Password" />
+            </div>
+            <button type="submit">Login</button>
+            <div class="message">@ViewBag.Message</div>
+        </div>
+    </form>
+</body>
+</html>

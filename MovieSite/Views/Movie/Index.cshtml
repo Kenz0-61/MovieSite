@@ -1,0 +1,62 @@
+﻿@model List<Movie>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Movies</title>
+    <link rel="stylesheet" href="~/css/mystyle.css" />
+</head>
+<body>
+    <h1>Movie List</h1>
+    <div class="container">
+        @foreach (var movie in Model)
+        {
+            <div class="movie-item">
+                <img class="image" src="@(movie.ImageUrl??"images/noimage.png")" alt="@movie.Name" />
+            </div> @*imageurl null ise*@
+            <div class="movie-bottom">
+                <h3 class="movie-title">
+                    @movie.Name
+                </h3>
+                <div class="buttons">
+                    <button class="button-blue" data-movieId=@movie.Id>@movie.LikeCount</button>
+                    <button class="button-red" data-movieId=@movie.Id>@movie.DislikeCount</button>
+                </div>
+            </div>
+        }
+    </div>
+    <script>
+        var buttons = document.querySelectorAll(".buttons button");
+        buttons.forEach(function(button){
+            button.addEventListener('click',function(){
+                var filmId = @*this hangi buttona tıkladıysam...*@ this.getAttribute('data-movieId');
+                var isLike = this.classList.contains('button-blue');
+                var data= {
+                    filmId:filmId,
+                    isLike:isLike
+                };
+                @* verileri göndermek için fetch yapısı kullanılıyor jquery ajax'da kullanılabilnir.*@ 
+                fetch("/movie/like",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json" /*içeriğimizin gönderileceği veri tipi "json" tipinde olucağını bildiriyoruz..*/
+                    },
+                    body:JSON.stringify(data),
+                }).then(function(response){
+                    return response.json();
+                }).then(function(data){
+                    if(data){ /*data null'dan farklıysa*/
+                        button.innerHTML=data;
+                    }
+                });
+                /*backend tarafın verilerin gönderelieceği end point veya uzaktaki bi api'da verileri gönderbiliriz... Örnek url end poin API: fetch("https://api.deneme.com/movie/like" post edilebilinir.)*/
+            });
+        });
+    </script>
+</body>
+</html>
